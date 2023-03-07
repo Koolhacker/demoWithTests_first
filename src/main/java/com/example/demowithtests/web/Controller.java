@@ -3,6 +3,7 @@ package com.example.demowithtests.web;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.service.Service;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Slf4j
 @AllArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class Controller {
@@ -60,4 +62,36 @@ public class Controller {
     public void removeAllUsers() {
         service.removeAll();
     }
+
+    @GetMapping("/replaceNull")
+    @ResponseStatus(HttpStatus.OK)
+    public void replaceNull() {
+        service.processor();
+    }
+
+    @PostMapping("/sendEmailByCountry")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmail(@RequestParam String country, @RequestParam String text) {
+        service.sendEmailByCountry(country, text);
+    }
+    @PostMapping("/sendEmailByCity")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmailByCity(@RequestParam String city, @RequestParam String text) {
+        service.sendEmailByCity(city, text);
+    }
+
+    @GetMapping("/fillData")
+    @ResponseStatus(HttpStatus.OK)
+    public void fillData() {
+        service.fillData();
+        log.info("Data succesful add");
+    }
+
+
+
+//    @PutMapping("/updateDateById")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void updateDateById() {
+//        service.updateDateById();
+//}
 }

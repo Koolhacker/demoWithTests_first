@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -20,6 +22,34 @@ public class Employee {
     private String name;
     private String country;
     private String email;
+
+    private Boolean isDeleted = Boolean.FALSE;
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id")
+    private Set<Address> addresses = new HashSet<>();
+
+    public Employee(String name, String country, Boolean isDeleted) {
+        this.name = name;
+        this.country = country;
+        this.isDeleted = isDeleted;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public Integer getId() {
         return id;
@@ -52,5 +82,17 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", email='" + email + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
+
 
 }
