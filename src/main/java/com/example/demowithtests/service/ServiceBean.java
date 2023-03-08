@@ -104,6 +104,7 @@ public class ServiceBean implements Service {
     @Override
     public List<Employee> sendEmailByCountry(String country, String text) {
         List<Employee> employees = repository.findEmployeeByCountry(country);
+        log.info(employees.toString());
         mailSender(extracted(employees), text);
         return employees;
     }
@@ -121,8 +122,17 @@ public class ServiceBean implements Service {
     }
 
     @Override
-    public List<Employee> sendEmailByCity(String city, String text){
+    public List<Employee> sendEmailByCity(String city, String text) {
         List<Employee> employees = repository.findEmployeeByAddresses(city);
+        log.info(employees.toString());
+        mailSender(extracted(employees), text);
+        return employees;
+    }
+
+    @Override
+    public List<Employee> sendEmailByCountryAndCity(String country, String city, String text) {
+        List<Employee> employees = repository.findEmployeeByCountryAndCity(country, city);
+        log.info("---it`s work---" + employees);
         mailSender(extracted(employees), text);
         return employees;
     }

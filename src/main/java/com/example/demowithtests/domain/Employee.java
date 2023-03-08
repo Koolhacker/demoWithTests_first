@@ -89,8 +89,8 @@ public class Employee {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
-                ", email='" + email + '\'' +
-                ", isDeleted=" + isDeleted +
+//                ", email='" + email + '\'' +
+//                ", isDeleted=" + isDeleted +
                 '}';
     }
 

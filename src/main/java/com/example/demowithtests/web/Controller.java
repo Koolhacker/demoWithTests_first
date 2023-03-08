@@ -74,10 +74,17 @@ public class Controller {
     public void sendEmail(@RequestParam String country, @RequestParam String text) {
         service.sendEmailByCountry(country, text);
     }
+
     @PostMapping("/sendEmailByCity")
     @ResponseStatus(HttpStatus.OK)
     public void sendEmailByCity(@RequestParam String city, @RequestParam String text) {
         service.sendEmailByCity(city, text);
+    }
+
+    @PostMapping("/sendEmailByCountryAndCity")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmailByCountryAndCity(@RequestParam String country, @RequestParam String city, @RequestParam String text) {
+        service.sendEmailByCountryAndCity(country, city, text);
     }
 
     @GetMapping("/fillData")
@@ -86,7 +93,6 @@ public class Controller {
         service.fillData();
         log.info("Data succesful add");
     }
-
 
 
 //    @PutMapping("/updateDateById")
