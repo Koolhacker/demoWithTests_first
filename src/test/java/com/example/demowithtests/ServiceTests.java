@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +31,7 @@ public class ServiceTests {
     private ServiceBean service;
 
     @Test
-    public void whenSaveEmployee_shouldReturnEmployee() {
+    public void whenSaveEmployee_shouldReturnEmployee() throws IOException {
         Employee employee = new Employee();
         employee.setName("Mark");
 
@@ -47,12 +48,12 @@ public class ServiceTests {
         Employee employee = new Employee();
         employee.setId(88);
 
-        when(repository.findById(employee.getId())).thenReturn(Optional.of(employee));
+        when(repository.findById(Integer.valueOf(employee.getId()))).thenReturn(Optional.of(employee));
 
-        Employee expected = service.getById(employee.getId());
+        Employee expected = service.getById(String.valueOf(employee.getId()));
 
         assertThat(expected).isSameAs(employee);
-        verify(repository).findById(employee.getId());
+        verify(repository).findById(Integer.valueOf(employee.getId()));
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -62,6 +63,6 @@ public class ServiceTests {
         employee.setName("Mark");
 
         given(repository.findById(anyInt())).willReturn(Optional.empty());
-        service.getById(employee.getId());
+        service.getById(String.valueOf(employee.getId()));
     }
 }

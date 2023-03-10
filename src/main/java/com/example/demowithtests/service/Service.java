@@ -2,15 +2,18 @@ package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Service {
 
-    Employee create(Employee employee);
+    Employee create(Employee employee) ;
 
     List<Employee> getAll();
 
-    Employee getById(Integer id);
+//    Employee getById(Integer id);
+
+    Employee getById(String id);
 
     Employee updateById(Integer id, Employee plane);
 

@@ -69,7 +69,7 @@ public class ControllerTests {
                 .country("France")
                 .build();
 
-        Mockito.when(repository.findById(employee.getId())).thenReturn(java.util.Optional.of(employee));
+        Mockito.when(repository.findById(Integer.valueOf(employee.getId()))).thenReturn(java.util.Optional.of(employee));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1")
                         .contentType(MediaType.APPLICATION_JSON))

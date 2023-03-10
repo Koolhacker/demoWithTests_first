@@ -30,7 +30,7 @@ public class RepositoryTests {
 
         repository.save(employee);
 
-        Assertions.assertThat(employee.getId()).isGreaterThan(0);
+        Assertions.assertThat(employee.getId()).isGreaterThan(Integer.parseInt(String.valueOf(0)));
     }
 
     @Test

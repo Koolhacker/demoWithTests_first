@@ -18,10 +18,10 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    private String email;
     private String name;
     private String country;
-    private String email;
+
 
     private Boolean isDeleted = Boolean.FALSE;
 

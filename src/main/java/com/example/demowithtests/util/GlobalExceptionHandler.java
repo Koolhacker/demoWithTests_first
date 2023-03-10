@@ -25,6 +25,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("This user was deleted"), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DataAbsentException.class)
+    protected ResponseEntity<MyGlobalExceptionHandler> dataAbsentException() {
+        return new ResponseEntity<>(new MyGlobalExceptionHandler("Not enough data"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WrongTypeIdException.class)
+    protected ResponseEntity<MyGlobalExceptionHandler> wrongTypeIdException() {
+        return new ResponseEntity<>(new MyGlobalExceptionHandler("Wrong type of data in ID"), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));

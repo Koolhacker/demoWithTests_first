@@ -1,13 +1,17 @@
 package com.example.demowithtests.web;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.EmployeeDto;
+import com.example.demowithtests.dto.EmployeeReadDto;
 import com.example.demowithtests.service.Service;
+import com.example.demowithtests.util.orika.EmployeeConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,12 +21,18 @@ import java.util.List;
 public class Controller {
 
     private final Service service;
+    private final EmployeeConverter employeeConverter;
 
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveEmployee(@RequestBody Employee employee) {
-        return service.create(employee);
+    public EmployeeReadDto saveEmployee(@RequestBody EmployeeDto employeeDto)  {
+        log.info("+++ with dto Start +++");
+        var entity = employeeConverter.getMapperFacade().map(employeeDto, Employee.class);
+        var dto = employeeConverter.toReadDto(service.create(entity));
+        log.info("+++ with dto Finish +++");
+        return dto;
+        //service.create(employee);
     }
 
     //Получение списка юзеров
@@ -35,7 +45,7 @@ public class Controller {
     //Получения юзера по id
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee getEmployeeById(@PathVariable Integer id) {
+    public Employee getEmployeeById(@PathVariable String id) {
 
         Employee employee = service.getById(id);
         return employee;
@@ -91,7 +101,7 @@ public class Controller {
     @ResponseStatus(HttpStatus.OK)
     public void fillData() {
         service.fillData();
-        log.info("Data succesful add");
+        log.info("Data successful add");
     }
 
 
