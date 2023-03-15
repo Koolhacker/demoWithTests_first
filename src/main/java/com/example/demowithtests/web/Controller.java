@@ -26,7 +26,7 @@ public class Controller {
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeReadDto saveEmployee(@RequestBody EmployeeDto employeeDto)  {
+    public EmployeeReadDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
         log.info("+++ with dto Start +++");
         var entity = employeeConverter.getMapperFacade().map(employeeDto, Employee.class);
         var dto = employeeConverter.toReadDto(service.create(entity));
@@ -76,8 +76,15 @@ public class Controller {
     @GetMapping("/replaceNull")
     @ResponseStatus(HttpStatus.OK)
     public void replaceNull() {
-        service.processor();
+        service.processorIsDeletedReplaceNull();
     }
+
+    @GetMapping("/changeAge")
+    @ResponseStatus(HttpStatus.OK)
+    public void processorAgeSet() {
+        service.processorAgeSet();
+    }
+
 
     @PostMapping("/sendEmailByCountry")
     @ResponseStatus(HttpStatus.OK)
@@ -104,10 +111,31 @@ public class Controller {
         log.info("Data successful add");
     }
 
+    @GetMapping("/fillDataHw24")
+    @ResponseStatus(HttpStatus.OK)
+    public void fillDataHw24(@RequestParam int size, @RequestBody Employee employee) {
+        service.fillDataHW24(size, employee);
+        log.info("Data successful add");
+    }
 
 //    @PutMapping("/updateDateById")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void updateDateById() {
-//        service.updateDateById();
-//}
+//    @GetMapping("/updateDateById")
+    @PatchMapping("/updateDateById")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateDateById(@RequestParam Integer startId, @RequestParam Integer endId,
+                               @RequestParam String country) {
+        service.updateDateById(startId, endId, country);
+    }
+
+    @PatchMapping("/updateCountryByIdRandom")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateCountryByIdRandom() {
+        service.updateCountryByIdRandom();
+    }
+    @PatchMapping("/updateCountryById")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateCountryById(@RequestParam Integer startId, @RequestParam Integer endId,
+                                  @RequestParam String country) {
+        service.updateCountryById(startId,endId,country);
+    }
 }

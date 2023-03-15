@@ -21,7 +21,8 @@ public interface Service {
 
     void removeAll();
 
-   List<Employee> processor();
+   List<Employee> processorIsDeletedReplaceNull();
+   List<Employee> processorAgeSet();
 
     List<Employee> sendEmailByCountry(String country, String text);
 
@@ -31,6 +32,12 @@ public interface Service {
 
     void fillData();
 
-    void updateDateById(Integer startId, Integer endId);
+    void fillDataHW24(int size, Employee employee);
+
+    void updateDateById(Integer startId, Integer endId, String country);
+
+    void updateCountryById(Integer startId, Integer endId, String country);
+
+    void updateCountryByIdRandom();
 
 }

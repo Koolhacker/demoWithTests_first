@@ -22,6 +22,23 @@ public class Employee {
     private String name;
     private String country;
 
+    private Integer age;
+
+    public Employee(Employee employee) {
+    }
+
+    public Employee(String name, String country, String email) {
+
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
     private Boolean isDeleted = Boolean.FALSE;
 
