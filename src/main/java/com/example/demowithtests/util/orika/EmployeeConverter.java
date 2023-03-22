@@ -27,8 +27,10 @@ public class EmployeeConverter {
         return mapperFacade.map(entity, EmployeeReadDto.class);
     }
 
-
     public Employee fromDto(EmployeeDto dto) {
         return mapperFacade.map(dto, Employee.class);
+    }
+    public Employee fromReadDto(EmployeeReadDto readDto) {
+        return mapperFacade.map(readDto, Employee.class);
     }
 }

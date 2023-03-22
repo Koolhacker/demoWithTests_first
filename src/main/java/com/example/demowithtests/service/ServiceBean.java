@@ -9,9 +9,11 @@ import com.example.demowithtests.util.WrongTypeIdException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
+import java.util.logging.Logger;
 
 @AllArgsConstructor
 @Slf4j
@@ -21,12 +23,15 @@ import java.util.*;
 public class ServiceBean implements Service {
 
     private final Repository repository;
+//    private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
 
 
     @Override
     public Employee create(Employee employee) {
         if (employee.getName() == null || employee.getEmail() == null || employee.getCountry() == null) {
             log.info("Not enough data. HttpStatus - " + HttpStatus.BAD_REQUEST);
+
+//            log.info("getAllEmployeeCountry() - end: countries = {}", countries);
             throw new DataAbsentException();
         }
         return repository.save(employee);
@@ -37,6 +42,7 @@ public class ServiceBean implements Service {
         return repository.findAll();
     }
 
+//    @Transactional
     @Override
     public Employee getById(String id) {
         try {
@@ -89,7 +95,7 @@ public class ServiceBean implements Service {
         for (Employee aliasEmp : replaceNull) {
             aliasEmp.setIsDeleted(Boolean.FALSE);
         }
-//        log.info("replaceNull after replace= {} ", replaceNull);
+        log.debug("replaceNull after replace= {} ", replaceNull);
         log.info("replaceNull -> end");
         return repository.saveAll(replaceNull);
     }

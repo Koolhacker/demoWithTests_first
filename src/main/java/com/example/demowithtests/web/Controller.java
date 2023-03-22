@@ -26,10 +26,12 @@ public class Controller {
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeReadDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
+    public EmployeeDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
         log.info("+++ with dto Start +++");
+
         var entity = employeeConverter.getMapperFacade().map(employeeDto, Employee.class);
-        var dto = employeeConverter.toReadDto(service.create(entity));
+        var dto = employeeConverter.toDto(service.create(entity));
+
         log.info("+++ with dto Finish +++");
         return dto;
         //service.create(employee);
@@ -45,17 +47,18 @@ public class Controller {
     //Получения юзера по id
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee getEmployeeById(@PathVariable String id) {
+    public EmployeeReadDto getEmployeeById(@PathVariable String id) {
 
-        Employee employee = service.getById(id);
-        return employee;
+        var employee = service.getById(id);
+        var dto = employeeConverter.toReadDto(employee);
+
+        return dto;
     }
 
     //Обновление юзера
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-
         return service.updateById(id, employee);
     }
 

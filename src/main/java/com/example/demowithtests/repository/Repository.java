@@ -35,11 +35,12 @@ public interface Repository extends JpaRepository<Employee, Integer> {
 
    List<Employee> findEmployeeByCountryAndCity(String country, String city);
 
-   // hw 24
+//    то что делали на уроке
     @Query(value = "select * from users where id between ?1 and ?2", nativeQuery = true)
     List<Employee> findEmployeeById(Integer startId, Integer endId);  //  Patch 50 к   1 раз 14 сек  последующие 9 сек
                                                                       //   Put 50 к    1 раз 14 сек  последующие 8 сек
                                                                       //   Get 50 к    1 раз 14 сек  последующие 8 сек
+       // hw 24
     @Query(value = "select * from users where users.country <> ?3 and id between ?1 and ?2", nativeQuery = true)
     List<Employee> findEmployeeByIdForUpdateCountry(Integer startId, Integer endId, String country);
                                                                      //   Patch 50 к   1 раз 13 сек  последующие 0.1 сек
