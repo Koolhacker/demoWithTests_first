@@ -4,9 +4,12 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
 import com.example.demowithtests.service.Service;
-import com.example.demowithtests.util.orika.EmployeeConverter;
+import com.example.demowithtests.util.config.Mapper;
+
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+//import lombok.var;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +19,28 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@AllArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class Controller {
+    public Controller(Service service, Mapper map) {
+        this.service = service;
+        this.mapper = map;
+    }
 
-    private final Service service;
-    private final EmployeeConverter employeeConverter;
+    private final Service service ;
+    private final Mapper mapper ;
 
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
-        log.info("+++ with dto Start +++");
+//        log.info("+++ with dto Start +++");
 
-        var entity = employeeConverter.getMapperFacade().map(employeeDto, Employee.class);
-        var dto = employeeConverter.toDto(service.create(entity));
+       Employee employee = mapper.employeeDtoToEmployee(employeeDto);
+        EmployeeDto dto = mapper.employeeToEmployeeDto(service.create(employee));
 
-        log.info("+++ with dto Finish +++");
+//        log.info("+++ with dto Finish +++");
         return dto;
         //service.create(employee);
     }
@@ -48,9 +56,10 @@ public class Controller {
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeReadDto getEmployeeById(@PathVariable String id) {
-
-        var employee = service.getById(id);
-        var dto = employeeConverter.toReadDto(employee);
+        log.info("+++  Start +++");
+        Employee employee = service.getById(id);
+        log.info("+++  Step 2  +++");
+        EmployeeReadDto dto = mapper.employeeToEmployeeReadDto(employee);
 
         return dto;
     }
@@ -111,14 +120,14 @@ public class Controller {
     @ResponseStatus(HttpStatus.OK)
     public void fillData() {
         service.fillData();
-        log.info("Data successful add");
+//        log.info("Data successful add");
     }
 
     @GetMapping("/fillDataHw24")
     @ResponseStatus(HttpStatus.OK)
     public void fillDataHw24(@RequestParam int size, @RequestBody Employee employee) {
         service.fillDataHW24(size, employee);
-        log.info("Data successful add");
+//        log.info("Data successful add");
     }
 
 //    @PutMapping("/updateDateById")

@@ -9,6 +9,7 @@ public class EmployeeDto {
     public String email;
     public String name;
     public String country;
+    public Integer age;
 
 //    public Date today = Date.from(Instant.now());
     public Set<AddressDto> addresses = new HashSet<>();
