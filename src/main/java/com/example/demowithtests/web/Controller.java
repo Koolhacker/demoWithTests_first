@@ -35,12 +35,12 @@ public class Controller {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
-//        log.info("+++ with dto Start +++");
+        log.info("+++ with mapper Start ");
 
        Employee employee = mapper.employeeDtoToEmployee(employeeDto);
         EmployeeDto dto = mapper.employeeToEmployeeDto(service.create(employee));
 
-//        log.info("+++ with dto Finish +++");
+        log.info("+++ with mapper Finish ");
         return dto;
         //service.create(employee);
     }
@@ -56,11 +56,11 @@ public class Controller {
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeReadDto getEmployeeById(@PathVariable String id) {
-        log.info("+++  Start +++");
+        log.info("+++  Start 1");
         Employee employee = service.getById(id);
-        log.info("+++  Step 2  +++");
+        log.info("+++  Step 2  ");
         EmployeeReadDto dto = mapper.employeeToEmployeeReadDto(employee);
-
+        log.info("+++  Step 3  ");
         return dto;
     }
 
@@ -72,11 +72,11 @@ public class Controller {
     }
 
     //Удаление по id
-    @PatchMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeEmployeeById(@PathVariable Integer id) {
-        service.removeById(id);
-    }
+//    @PatchMapping("/users/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void removeEmployeeById(@PathVariable Integer id) {
+//        service.removeById(id);
+//    }
 
     //Удаление всех юзеров
     @DeleteMapping("/users")

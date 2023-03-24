@@ -1,9 +1,6 @@
 package com.example.demowithtests.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,7 +11,9 @@ import java.util.Set;
 @AllArgsConstructor
 //@NoArgsConstructor
 @Builder
-@Data
+//@Data
+@Getter
+@Setter
 public class Employee {
 
     @Id
@@ -24,6 +23,7 @@ public class Employee {
     private String name;
     private String country;
     private Integer age;
+    private Boolean isDeleted = Boolean.FALSE;
 
     public Employee(Employee employee) {
     }
@@ -41,19 +41,46 @@ public class Employee {
         this.age = age;
     }
 
-    private Boolean isDeleted = Boolean.FALSE;
 
-    public Set<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-    }
+//    эксперименты с поиском баги с гетСетерами
+//    public Set<Address> getAddresses() {
+//        return addresses;
+//    }
+//
+//    public void setAddresses(Set<Address> addresses) {
+//        this.addresses = addresses;
+//    }
+//
+//    public Set<Photo> getPhotos() {
+//        return photos;
+//    }
+//
+//    public void setPhotos(Set<Photo> photos) {
+//        this.photos = photos;
+//    }
+//
+//    public Set<FindBagga> getFindBaggas() {
+//        return findBaggas;
+//    }
+//
+//    public void setFindBaggas(Set<FindBagga> findBaggas) {
+//        this.findBaggas = findBaggas;
+//    }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Set<Photo> photos = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Set<FindBagga> findBaggas = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Set<Family> families = new HashSet<>();
 
     public Employee(String name, String country, Boolean isDeleted) {
         this.name = name;

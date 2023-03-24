@@ -22,6 +22,7 @@ public interface Service {
     void removeAll();
 
    List<Employee> processorIsDeletedReplaceNull();
+
    List<Employee> processorAgeSet();
 
     List<Employee> sendEmailByCountry(String country, String text);
