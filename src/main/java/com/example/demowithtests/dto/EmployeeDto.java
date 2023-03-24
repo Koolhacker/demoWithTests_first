@@ -2,6 +2,7 @@ package com.example.demowithtests.dto;
 
 import com.example.demowithtests.domain.Family;
 import com.example.demowithtests.domain.Photo;
+import com.example.demowithtests.domain.PhotoByHands;
 
 import java.time.Instant;
 import java.util.Date;
@@ -20,8 +21,11 @@ public class EmployeeDto {
     public Set<AddressDto> addresses = new HashSet<>();
 
     public Set<PhotoDto> photos = new HashSet<>();
+    public Set<PhotoByHandsDto> photoByHands = new HashSet<>();
 
     public Set<FindBaggaDto> findBaggas = new HashSet<>();
 
     public Set<FamilyDto> families = new HashSet<>();
+
+
 }

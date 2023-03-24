@@ -7,21 +7,22 @@ import java.time.Instant;
 import java.util.Date;
 
 @Entity
-@Table(name = "photos")
+@Table(name = "photoByHands")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Data
 @ToString
-@Getter
-@Setter
-public class Photo {
+@Builder
+
+public class PhotoByHands {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String linkPhoto;
-    private Integer xHigh;
-    private Integer yLength;
+    private Integer high;
+    private Integer length;
     private Date createDate = Date.from(Instant.now());
     private Boolean isVisible = Boolean.TRUE;
+
 
 }

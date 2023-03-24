@@ -82,6 +82,10 @@ public class Employee {
     @JoinColumn(name = "employee_id")
     private Set<Family> families = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Set<PhotoByHands> photoByHands = new HashSet<>();
+
     public Employee(String name, String country, Boolean isDeleted) {
         this.name = name;
         this.country = country;

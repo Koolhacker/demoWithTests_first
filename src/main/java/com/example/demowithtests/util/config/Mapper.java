@@ -29,4 +29,8 @@ public interface Mapper {
     Family map (FamilyDto familyDto);
 
     FamilyDto map(Family family);
+
+    PhotoByHands map (PhotoByHandsDto photo);
+
+    PhotoByHandsDto map (PhotoByHands photoByHands);
 }

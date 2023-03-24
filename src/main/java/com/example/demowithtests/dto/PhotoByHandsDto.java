@@ -1,20 +1,23 @@
 package com.example.demowithtests.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
+
 //@Data
-//@Getter
-//@Setter
-public class PhotoDto {
+public class PhotoByHandsDto {
 
     public String linkPhoto;
-    public Integer xHigh;;
-    public Integer yLength;
+    public Integer high;
+    public Integer length;
     public Date createDate = Date.from(Instant.now());
     public Boolean isVisible = Boolean.TRUE;
+
+
 }
