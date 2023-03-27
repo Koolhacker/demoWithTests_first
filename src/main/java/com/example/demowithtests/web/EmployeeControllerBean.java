@@ -6,15 +6,13 @@ import com.example.demowithtests.dto.EmployeeReadDto;
 import com.example.demowithtests.service.Service;
 import com.example.demowithtests.util.config.Mapper;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 //import lombok.var;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,27 +20,26 @@ import java.util.List;
 //@AllArgsConstructor
 //@NoArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-public class Controller {
-    public Controller(Service service, Mapper map) {
+@Tag(name = "Employee", description = "Employee API")
+
+public class EmployeeControllerBean implements EmployeeController {
+    public EmployeeControllerBean(Service service, Mapper map) {
         this.service = service;
         this.mapper = map;
     }
 
-    private final Service service ;
-    private final Mapper mapper ;
+    private final Service service;
+    private final Mapper mapper;
 
-    //Операция сохранения юзера в базу данных
+    @Override
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
         log.info("+++ with mapper Start ");
-
-       Employee employee = mapper.employeeDtoToEmployee(employeeDto);
+        Employee employee = mapper.employeeDtoToEmployee(employeeDto);
         EmployeeDto dto = mapper.employeeToEmployeeDto(service.create(employee));
-
         log.info("+++ with mapper Finish ");
         return dto;
-        //service.create(employee);
     }
 
     //Получение списка юзеров
@@ -55,8 +52,9 @@ public class Controller {
     //Получения юзера по id
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Override
     public EmployeeReadDto getEmployeeById(@PathVariable String id) {
-        log.info("+++  Start 1");
+        log.info("+++  Start 1 ");
         Employee employee = service.getById(id);
         log.info("+++  Step 2  ");
         EmployeeReadDto dto = mapper.employeeToEmployeeReadDto(employee);
@@ -116,6 +114,13 @@ public class Controller {
         service.sendEmailByCountryAndCity(country, city, text);
     }
 
+    //hw 27
+    @GetMapping("/sendEmailEmployeeWhoChangedCountry")
+    @ResponseStatus(HttpStatus.OK)
+    public void findEmployeeWhoChangedCountry(@RequestParam String country,  @RequestParam String text) {
+        service.findEmployeeWhoChangedCountry( country,  text);
+    }
+
     @GetMapping("/fillData")
     @ResponseStatus(HttpStatus.OK)
     public void fillData() {
@@ -130,7 +135,7 @@ public class Controller {
 //        log.info("Data successful add");
     }
 
-//    @PutMapping("/updateDateById")
+    //    @PutMapping("/updateDateById")
 //    @GetMapping("/updateDateById")
     @PatchMapping("/updateDateById")
     @ResponseStatus(HttpStatus.OK)
@@ -144,10 +149,11 @@ public class Controller {
     public void updateCountryByIdRandom() {
         service.updateCountryByIdRandom();
     }
+
     @PatchMapping("/updateCountryById")
     @ResponseStatus(HttpStatus.OK)
     public void updateCountryById(@RequestParam Integer startId, @RequestParam Integer endId,
                                   @RequestParam String country) {
-        service.updateCountryById(startId,endId,country);
+        service.updateCountryById(startId, endId, country);
     }
 }

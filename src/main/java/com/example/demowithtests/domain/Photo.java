@@ -19,8 +19,8 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String linkPhoto;
-    private Integer xHigh;
-    private Integer yLength;
+    private Integer high;
+    private Integer length;
     private Date createDate = Date.from(Instant.now());
     private Boolean isVisible = Boolean.TRUE;
 

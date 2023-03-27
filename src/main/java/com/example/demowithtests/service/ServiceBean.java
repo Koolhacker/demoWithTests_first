@@ -214,5 +214,15 @@ public class ServiceBean implements Service {
         return employees;
     }
 
+    //hw 27
+    @Override
+    public List<Employee> findEmployeeWhoChangedCountry(String country, String text) {
+        List<Employee> employeeList = repository.findEmployeeWhoChangedCountry(country);
+        mailSender(extracted(employeeList),text);
+        return employeeList;
+    }
+
+
+
 
 }

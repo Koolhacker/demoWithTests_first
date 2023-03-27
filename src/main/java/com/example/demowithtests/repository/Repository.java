@@ -45,5 +45,9 @@ public interface Repository extends JpaRepository<Employee, Integer> {
     List<Employee> findEmployeeByIdForUpdateCountry(Integer startId, Integer endId, String country);
                                                                      //   Patch 50 к   1 раз 13 сек  последующие 0.1 сек
 
-
+    // hw 27 return list of Employee who change country
+    // ( difference between users.country and addresses.country)
+    @Query(value = "select * from users join addresses on users.id = addresses.employee_id" +
+            " where users.country = ?1 and addresses.country <> ?1", nativeQuery = true)
+    List<Employee> findEmployeeWhoChangedCountry(String country);
 }

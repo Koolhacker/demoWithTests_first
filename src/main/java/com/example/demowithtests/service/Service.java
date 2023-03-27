@@ -31,6 +31,10 @@ public interface Service {
 
     List<Employee> sendEmailByCountryAndCity(String country, String city, String text);
 
+    // hw 27
+    List<Employee> findEmployeeWhoChangedCountry(String country, String text);
+
+
     void fillData();
 
     void fillDataHW24(int size, Employee employee);
