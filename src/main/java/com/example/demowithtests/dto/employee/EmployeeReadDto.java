@@ -1,12 +1,14 @@
-package com.example.demowithtests.dto;
+package com.example.demowithtests.dto.employee;
 
-import com.example.demowithtests.domain.Address;
+import com.example.demowithtests.dto.passport.PassportResponseDto;
+import lombok.Data;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 public class EmployeeReadDto { // !!!!!!!!!! This will see user  !!!!!!!!!!!
 
 
@@ -22,4 +24,6 @@ public class EmployeeReadDto { // !!!!!!!!!! This will see user  !!!!!!!!!!!
 //    public Set<AddressDto> addresses = new HashSet<>();
 
     public Set<PhotoDto> photos = new HashSet<>();
+
+    public PassportResponseDto passport;
 }

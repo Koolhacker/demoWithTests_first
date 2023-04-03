@@ -1,11 +1,12 @@
-package com.example.demowithtests.dto;
+package com.example.demowithtests.dto.employee;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.Instant;
 import java.util.Date;
-
+@ToString
 //@Getter
 //@Setter
 public class AddressDto {

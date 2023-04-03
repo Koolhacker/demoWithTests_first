@@ -18,14 +18,18 @@ spring:
 # Server configuration
 server:
   port: 8087 #set your port
+
   # Logger configuration
 logging:
   pattern:
     console: "%d %-5level %logger : %msg%n"
   level:
-    com.example.demowithtests: info
-    org.springframework: info
-    org.hibernate: info
+#    com.example.demowithtests.service: debug
+#    com.example.demowithtests.web: debug
+    com.example.demowithtests: debug
+#    org.springframework: warn
+#    org.hibernate: trace
+#    org.apache.catalina.core: warn
 
 springdoc:
   swagger-ui:

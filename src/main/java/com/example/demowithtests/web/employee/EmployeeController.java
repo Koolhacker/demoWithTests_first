@@ -1,13 +1,13 @@
-package com.example.demowithtests.web;
+package com.example.demowithtests.web.employee;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.EmployeeDto;
-import com.example.demowithtests.dto.EmployeeReadDto;
+import com.example.demowithtests.dto.employee.EmployeeDto;
+import com.example.demowithtests.dto.employee.EmployeeReadDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,4 +33,14 @@ public interface EmployeeController {
 
     @Operation(summary = "Fill the gap Age for all Employee", tags = {"Employee"})
     void processorAgeSet();
+
+    @Operation(summary = "This is endpoint to add employee passport by params")
+    @PatchMapping("/addPassport")
+    @ResponseStatus(HttpStatus.OK)
+    EmployeeReadDto addPassport(@RequestParam  Integer employeeId, @RequestParam Integer passportId);
+
+    @Operation(summary = "This is endpoint to add employee passport by pathVariable")
+    @PatchMapping("/users/{uid}/passports/{pid}")
+    @ResponseStatus(HttpStatus.OK)
+    EmployeeReadDto addPassportSafely(@PathVariable("uid")  Integer employeeId, @PathVariable("pid") Integer passportId);
 }

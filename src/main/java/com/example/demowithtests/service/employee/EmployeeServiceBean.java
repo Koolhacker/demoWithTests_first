@@ -1,7 +1,9 @@
-package com.example.demowithtests.service;
+package com.example.demowithtests.service.employee;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.repository.Repository;
+import com.example.demowithtests.domain.Passport;
+import com.example.demowithtests.repository.EmployeeRepository;
+import com.example.demowithtests.repository.PassportRepository;
 import com.example.demowithtests.util.DataAbsentException;
 import com.example.demowithtests.util.ResourceNotFoundException;
 import com.example.demowithtests.util.ResourceWasDeletedException;
@@ -10,22 +12,20 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
-import java.util.logging.Logger;
 
 @AllArgsConstructor
 @Slf4j
-@org.springframework.stereotype.Service
+@Service
 
+public class EmployeeServiceBean implements EmployeeService {
 
-public class ServiceBean implements Service {
-
-    private final Repository repository;
+    private final EmployeeRepository employeeRepository;
+    private final PassportRepository passportRepository;
 //    private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
-
 
     @Override
     public Employee create(Employee employee) {
@@ -35,20 +35,19 @@ public class ServiceBean implements Service {
 //            log.info("getAllEmployeeCountry() - end: countries = {}", countries);
             throw new DataAbsentException();
         }
-        return repository.save(employee);
+        return employeeRepository.save(employee);
     }
 
     @Override
     public List<Employee> getAll() {
-        return repository.findAll();
+        return employeeRepository.findAll();
     }
 
-//    @Transactional
     @Override
     public Employee getById(String id) {
         try {
             Integer valueOfId = Integer.valueOf(id);
-            var employee = repository.findById(valueOfId)
+            var employee = employeeRepository.findById(valueOfId)
 //                 .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                     //  при отсутствии возвращает статус 500
                     .orElseThrow(ResourceNotFoundException::new); //  при отсутствии возвращает статус 404
@@ -63,61 +62,60 @@ public class ServiceBean implements Service {
 
     @Override
     public Employee updateById(Integer id, Employee employee) {
-        return repository.findById(id).map(entity -> {
+        return employeeRepository.findById(id).map(entity -> {
             entity.setName(employee.getName());
             entity.setEmail(employee.getEmail());
             entity.setCountry(employee.getCountry());
-            return repository.save(entity);
+            return employeeRepository.save(entity);
         }).orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
     }
 
     @Override
     public void removeById(Integer id) {
         //repository.deleteById(id);
-        var employee = repository.findById(id)
+        var employee = employeeRepository.findById(id)
                 // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceWasDeletedException::new);
         employee.setIsDeleted(true);
 //        repository.delete(employee);
-        repository.save(employee);
+        employeeRepository.save(employee);
     }
 
     @Override
     public void removeAll() {
-        repository.deleteAll();
-
+        employeeRepository.deleteAll();
     }
 
     @Override
     public List<Employee> processorIsDeletedReplaceNull() {
-        log.info("replaceNull -> start");
-        List<Employee> replaceNull = repository.findEmployeeByIsDeletedNull();
-//        log.info("replaceNull before replace= {} ", replaceNull);
+        log.debug("replaceNull -> start");
+        List<Employee> replaceNull = employeeRepository.findEmployeeByIsDeletedNull();
+        log.debug("replaceNull before replace= {} ", replaceNull);
         for (Employee aliasEmp : replaceNull) {
             aliasEmp.setIsDeleted(Boolean.FALSE);
         }
         log.debug("replaceNull after replace= {} ", replaceNull);
-        log.info("replaceNull -> end");
-        return repository.saveAll(replaceNull);
+        log.debug("replaceNull -> end");
+        return employeeRepository.saveAll(replaceNull);
     }
 
     @Override
     public List<Employee> processorAgeSet() { // if age is absent - set to all "25"
         log.info("processorSetAge START");
-        List<Employee> changeAge = repository.findEmployeeByAgeForSet();
+        List<Employee> changeAge = employeeRepository.findEmployeeByAgeForSet();
         for (Employee aliasEmp : changeAge) {
             if (aliasEmp.getAge() == null) {
                 aliasEmp.setAge(25);
             }
         }
-        return repository.saveAll(changeAge);
+        return employeeRepository.saveAll(changeAge);
     }
 
     @Override
     public void fillData() {
         for (int i = 0; i <= 10; i++) {
             Employee employee = new Employee("Hillel", "Ukraine", Boolean.FALSE);
-            repository.save(employee);
+            employeeRepository.save(employee);
         }
     }
 
@@ -128,37 +126,37 @@ public class ServiceBean implements Service {
             tempEmployee.setName(employee.getName());
             tempEmployee.setEmail(employee.getEmail());
             tempEmployee.setCountry(employee.getCountry());
-            repository.save(tempEmployee);
+            employeeRepository.save(tempEmployee);
         }
     }
 
     @Override
     public void updateDateById(Integer startId, Integer endId, String country) {
-        List<Employee> tempList = repository.findEmployeeById(startId, endId);
+        List<Employee> tempList = employeeRepository.findEmployeeById(startId, endId);
         for (Employee tmp : tempList) {
             tmp.setCountry(country);
         }
-        repository.saveAll(tempList);
+        employeeRepository.saveAll(tempList);
     }
 
     @Override
     public void updateCountryById(Integer startId, Integer endId, String country) {
-        List<Employee> tempList = repository.findEmployeeByIdForUpdateCountry(startId, endId, country);
+        List<Employee> tempList = employeeRepository.findEmployeeByIdForUpdateCountry(startId, endId, country);
         for (Employee tmp : tempList) {
             tmp.setCountry(country);
         }
-        repository.saveAll(tempList);
+        employeeRepository.saveAll(tempList);
     }
 
 
     // hw 24 task 1
     @Override
     public void updateCountryByIdRandom() {
-        List<Employee> tempList = repository.findAll();
+        List<Employee> tempList = employeeRepository.findAll();
         for (Employee empTemp : tempList) {
             empTemp.setCountry(countryRandomGenerator());
         }
-        repository.saveAll(tempList);
+        employeeRepository.saveAll(tempList);
     }
 
     private static String countryRandomGenerator() {
@@ -180,7 +178,7 @@ public class ServiceBean implements Service {
 
     @Override
     public List<Employee> sendEmailByCountry(String country, String text) {
-        List<Employee> employees = repository.findEmployeeByCountry(country);
+        List<Employee> employees = employeeRepository.findEmployeeByCountry(country);
         log.info(employees.toString());
         mailSender(extracted(employees), text);
         return employees;
@@ -200,7 +198,7 @@ public class ServiceBean implements Service {
 
     @Override
     public List<Employee> sendEmailByCity(String city, String text) {
-        List<Employee> employees = repository.findEmployeeByAddresses(city);
+        List<Employee> employees = employeeRepository.findEmployeeByAddresses(city);
         log.info(employees.toString());
         mailSender(extracted(employees), text);
         return employees;
@@ -208,7 +206,7 @@ public class ServiceBean implements Service {
 
     @Override
     public List<Employee> sendEmailByCountryAndCity(String country, String city, String text) {
-        List<Employee> employees = repository.findEmployeeByCountryAndCity(country, city);
+        List<Employee> employees = employeeRepository.findEmployeeByCountryAndCity(country, city);
         log.info("---it`s work---" + employees);
         mailSender(extracted(employees), text);
         return employees;
@@ -217,12 +215,20 @@ public class ServiceBean implements Service {
     //hw 27
     @Override
     public List<Employee> findEmployeeWhoChangedCountry(String country, String text) {
-        List<Employee> employeeList = repository.findEmployeeWhoChangedCountry(country);
-        mailSender(extracted(employeeList),text);
+        List<Employee> employeeList = employeeRepository.findEmployeeWhoChangedCountry(country);
+        mailSender(extracted(employeeList), text);
         return employeeList;
     }
 
-
-
-
+    @Override
+    public Employee addPassport(Integer employeeId, Integer passportId) {
+        log.debug("*** method addPassport >>>  START ");
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(WrongTypeIdException::new);
+        Passport passport = passportRepository.findById(passportId).orElseThrow(WrongTypeIdException::new);
+        employee.setPassport(passport);
+        log.debug("*** method addPassport BEFORE SAVING >>>  FINISH ");
+        employeeRepository.save(employee);
+        log.debug("*** method addPassport AFTER SAVING >>>  FINISH ");
+        return employee;
+    }
 }

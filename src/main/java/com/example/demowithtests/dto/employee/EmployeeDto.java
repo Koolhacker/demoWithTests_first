@@ -1,15 +1,12 @@
-package com.example.demowithtests.dto;
+package com.example.demowithtests.dto.employee;
 
-import com.example.demowithtests.domain.Family;
-import com.example.demowithtests.domain.Photo;
-import com.example.demowithtests.domain.PhotoByHands;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.ToString;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 public class EmployeeDto {
 
     @Schema(description = "Name of an employee.", example = "Sergio", required = true)

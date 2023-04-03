@@ -1,17 +1,14 @@
-package com.example.demowithtests.service;
+package com.example.demowithtests.service.employee;
 
 import com.example.demowithtests.domain.Employee;
 
-import java.io.IOException;
 import java.util.List;
 
-public interface Service {
+public interface EmployeeService {
 
     Employee create(Employee employee) ;
 
     List<Employee> getAll();
-
-//    Employee getById(Integer id);
 
     Employee getById(String id);
 
@@ -34,7 +31,6 @@ public interface Service {
     // hw 27
     List<Employee> findEmployeeWhoChangedCountry(String country, String text);
 
-
     void fillData();
 
     void fillDataHW24(int size, Employee employee);
@@ -44,5 +40,7 @@ public interface Service {
     void updateCountryById(Integer startId, Integer endId, String country);
 
     void updateCountryByIdRandom();
+
+    Employee addPassport(Integer employeeId, Integer passportId);
 
 }

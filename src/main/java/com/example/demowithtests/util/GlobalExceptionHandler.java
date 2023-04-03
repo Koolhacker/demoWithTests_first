@@ -25,6 +25,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("This user was deleted"), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(IdNotFoundException.class)
+    protected ResponseEntity<MyGlobalExceptionHandler> idNotFoundException() {
+        return new ResponseEntity<>(new MyGlobalExceptionHandler("Id not found"), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(DataAbsentException.class)
     protected ResponseEntity<MyGlobalExceptionHandler> dataAbsentException() {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("Not enough data"), HttpStatus.BAD_REQUEST);
@@ -36,7 +41,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+    public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }

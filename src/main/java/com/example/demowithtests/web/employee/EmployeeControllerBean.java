@@ -1,10 +1,10 @@
-package com.example.demowithtests.web;
+package com.example.demowithtests.web.employee;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.EmployeeDto;
-import com.example.demowithtests.dto.EmployeeReadDto;
-import com.example.demowithtests.service.Service;
-import com.example.demowithtests.util.config.Mapper;
+import com.example.demowithtests.dto.employee.EmployeeDto;
+import com.example.demowithtests.dto.employee.EmployeeReadDto;
+import com.example.demowithtests.service.employee.EmployeeService;
+import com.example.demowithtests.util.config.mapstruct.EmployeeMapper;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -23,22 +23,22 @@ import java.util.List;
 @Tag(name = "Employee", description = "Employee API")
 
 public class EmployeeControllerBean implements EmployeeController {
-    public EmployeeControllerBean(Service service, Mapper map) {
-        this.service = service;
-        this.mapper = map;
+    public EmployeeControllerBean(EmployeeService employeeService, EmployeeMapper map) {
+        this.employeeService = employeeService;
+        this.employeeMapper = map;
     }
 
-    private final Service service;
-    private final Mapper mapper;
+    private final EmployeeService employeeService;
+    private final EmployeeMapper employeeMapper;
 
     @Override
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
-        log.info("+++ with mapper Start ");
-        Employee employee = mapper.employeeDtoToEmployee(employeeDto);
-        EmployeeDto dto = mapper.employeeToEmployeeDto(service.create(employee));
-        log.info("+++ with mapper Finish ");
+        log.info(" *** method saveEmployee >>>  START");
+        Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
+        EmployeeDto dto = employeeMapper.employeeToEmployeeDto(employeeService.create(employee));
+        log.info(" *** method saveEmployee >>>  FINISH ");
         return dto;
     }
 
@@ -46,7 +46,7 @@ public class EmployeeControllerBean implements EmployeeController {
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllUsers() {
-        return service.getAll();
+        return employeeService.getAll();
     }
 
     //Получения юзера по id
@@ -54,11 +54,10 @@ public class EmployeeControllerBean implements EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     @Override
     public EmployeeReadDto getEmployeeById(@PathVariable String id) {
-        log.info("+++  Start 1 ");
-        Employee employee = service.getById(id);
-        log.info("+++  Step 2  ");
-        EmployeeReadDto dto = mapper.employeeToEmployeeReadDto(employee);
-        log.info("+++  Step 3  ");
+        log.info("*** method getEmployeeById >>>  START , id = {}", id);
+        Employee employee = employeeService.getById(id);
+        EmployeeReadDto dto = employeeMapper.employeeToEmployeeReadDto(employee);
+        log.info(" *** method getEmployeeById >>>  FINISH info {} ", employee);
         return dto;
     }
 
@@ -66,7 +65,7 @@ public class EmployeeControllerBean implements EmployeeController {
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-        return service.updateById(id, employee);
+        return employeeService.updateById(id, employee);
     }
 
     //Удаление по id
@@ -80,58 +79,58 @@ public class EmployeeControllerBean implements EmployeeController {
     @DeleteMapping("/users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllUsers() {
-        service.removeAll();
+        employeeService.removeAll();
     }
 
     @GetMapping("/replaceNull")
     @ResponseStatus(HttpStatus.OK)
     public void replaceNull() {
-        service.processorIsDeletedReplaceNull();
+        employeeService.processorIsDeletedReplaceNull();
     }
 
     @GetMapping("/changeAge")
     @ResponseStatus(HttpStatus.OK)
     public void processorAgeSet() {
-        service.processorAgeSet();
+        employeeService.processorAgeSet();
     }
 
 
     @PostMapping("/sendEmailByCountry")
     @ResponseStatus(HttpStatus.OK)
     public void sendEmail(@RequestParam String country, @RequestParam String text) {
-        service.sendEmailByCountry(country, text);
+        employeeService.sendEmailByCountry(country, text);
     }
 
     @PostMapping("/sendEmailByCity")
     @ResponseStatus(HttpStatus.OK)
     public void sendEmailByCity(@RequestParam String city, @RequestParam String text) {
-        service.sendEmailByCity(city, text);
+        employeeService.sendEmailByCity(city, text);
     }
 
     @PostMapping("/sendEmailByCountryAndCity")
     @ResponseStatus(HttpStatus.OK)
     public void sendEmailByCountryAndCity(@RequestParam String country, @RequestParam String city, @RequestParam String text) {
-        service.sendEmailByCountryAndCity(country, city, text);
+        employeeService.sendEmailByCountryAndCity(country, city, text);
     }
 
     //hw 27
     @GetMapping("/sendEmailEmployeeWhoChangedCountry")
     @ResponseStatus(HttpStatus.OK)
-    public void findEmployeeWhoChangedCountry(@RequestParam String country,  @RequestParam String text) {
-        service.findEmployeeWhoChangedCountry( country,  text);
+    public void findEmployeeWhoChangedCountry(@RequestParam String country, @RequestParam String text) {
+        employeeService.findEmployeeWhoChangedCountry(country, text);
     }
 
     @GetMapping("/fillData")
     @ResponseStatus(HttpStatus.OK)
     public void fillData() {
-        service.fillData();
+        employeeService.fillData();
 //        log.info("Data successful add");
     }
 
     @GetMapping("/fillDataHw24")
     @ResponseStatus(HttpStatus.OK)
     public void fillDataHw24(@RequestParam int size, @RequestBody Employee employee) {
-        service.fillDataHW24(size, employee);
+        employeeService.fillDataHW24(size, employee);
 //        log.info("Data successful add");
     }
 
@@ -141,19 +140,36 @@ public class EmployeeControllerBean implements EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public void updateDateById(@RequestParam Integer startId, @RequestParam Integer endId,
                                @RequestParam String country) {
-        service.updateDateById(startId, endId, country);
+        employeeService.updateDateById(startId, endId, country);
     }
 
     @PatchMapping("/updateCountryByIdRandom")
     @ResponseStatus(HttpStatus.OK)
     public void updateCountryByIdRandom() {
-        service.updateCountryByIdRandom();
+        employeeService.updateCountryByIdRandom();
     }
 
     @PatchMapping("/updateCountryById")
     @ResponseStatus(HttpStatus.OK)
     public void updateCountryById(@RequestParam Integer startId, @RequestParam Integer endId,
                                   @RequestParam String country) {
-        service.updateCountryById(startId, endId, country);
+        employeeService.updateCountryById(startId, endId, country);
     }
+
+    @Override
+    public EmployeeReadDto addPassport(Integer employeeId, Integer passportId) {
+        log.info("*** method addPassport >>>  START ");
+        Employee employee = employeeService.addPassport(employeeId, passportId);
+        log.info("*** method addPassport >>>  FINISH ");
+        return employeeMapper.employeeToEmployeeReadDto(employee);
+    }
+
+    @Override
+    public EmployeeReadDto addPassportSafely(Integer employeeId, Integer passportId) {
+        log.info("*** method addPassportSafely >>>  START ");
+        Employee employee = employeeService.addPassport(employeeId, passportId);
+        log.info("*** method addPassportSafely >>>  FINISH ");
+        return employeeMapper.employeeToEmployeeReadDto(employee);
+    }
+
 }

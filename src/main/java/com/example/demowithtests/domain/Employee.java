@@ -86,6 +86,10 @@ public class Employee {
     @JoinColumn(name = "employee_id")
     private Set<PhotoByHands> photoByHands = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "passport_id", referencedColumnName = "id")
+    private Passport passport;
+
     public Employee(String name, String country, Boolean isDeleted) {
         this.name = name;
         this.country = country;

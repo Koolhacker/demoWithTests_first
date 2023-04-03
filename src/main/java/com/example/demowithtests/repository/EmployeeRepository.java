@@ -4,16 +4,14 @@ import com.example.demowithtests.domain.Employee;
 //import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-@org.springframework.stereotype.Repository
-//@Component
-public interface Repository extends JpaRepository<Employee, Integer> {
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Employee findByName(String name);
-
 
     @Query(value = "select * from users", nativeQuery = true)  // 71 к employee делает за 19/20 сек
     List<Employee> findAll();
