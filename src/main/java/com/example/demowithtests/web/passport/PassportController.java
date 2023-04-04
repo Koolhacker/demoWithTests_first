@@ -27,6 +27,6 @@ public interface PassportController {
     @Operation(summary = "This is endpoint to update passport by id")
     @PutMapping("/passports/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    PassportResponseDto refreshPassport(@PathVariable("id") Integer id, @RequestBody PassportRequestDto passportRequestDto);
+    PassportResponseDto refreshPassport(@PathVariable("id") String id, @RequestBody PassportRequestDto passportRequestDto);
 
 }

@@ -21,8 +21,9 @@ public class EmployeeReadDto { // !!!!!!!!!! This will see user  !!!!!!!!!!!
 
     public Date today = Date.from(Instant.now());
 
-//    public Set<AddressDto> addresses = new HashSet<>();
+    public Set<AddressDto> addresses = new HashSet<>();
 
+    public Set<PhotoByHandsDto> photoByHandsDtos = new HashSet<>();
     public Set<PhotoDto> photos = new HashSet<>();
 
     public PassportResponseDto passport;

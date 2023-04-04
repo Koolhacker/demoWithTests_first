@@ -47,16 +47,16 @@ public class PassportServiceBean implements PassportService {
     }
 
     @Override
-    public Passport updateById(Integer id, Passport passport) {
+    public Passport updateById(String id, Passport passport) {
         log.debug("*** method updateById >>>  START ");
         try {
-            return passportRepository.findById(id).map(entity -> {
+            return passportRepository.findById(Integer.valueOf(id)).map(entity -> {
                 entity.setFirstName(passport.getFirstName());
                 entity.setSecondName(passport.getSecondName());
                 return passportRepository.save(entity);
             }).orElseThrow(IdNotFoundException::new);
-            //                EntityNotFoundException("Employee not found with id = " + id));
         } catch (NumberFormatException exception) {
+            log.debug("*** method updateById  >>>  CATCH WRONG TYPE ID EXCEPTION ");
             throw new WrongTypeIdException();
         }
     }

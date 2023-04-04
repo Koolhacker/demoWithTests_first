@@ -21,10 +21,11 @@ import java.util.List;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Passport", description = "Passport API")
 
-public class PassportControllerBean implements PassportController{
+public class PassportControllerBean implements PassportController {
 
     private final PassportService passportService;
     private final PassportMapper passportMapper;
+
     @Override
     public PassportResponseDto savePassport(PassportRequestDto passportRequestDto) {
         log.info("*** method savePassport >>>  START ");
@@ -39,7 +40,7 @@ public class PassportControllerBean implements PassportController{
         log.info("*** method getAllPassports >>>  START ");
         List<Passport> passports = passportService.getAll();
         List<PassportResponseDto> passportResponseDtos = new ArrayList<>();
-        for (Passport passport : passports){
+        for (Passport passport : passports) {
             passportResponseDtos.add(passportMapper.toResponseDto(passport));
         }
         log.info("*** method getAllPassports >>>  FINISH ");
@@ -56,13 +57,11 @@ public class PassportControllerBean implements PassportController{
     }
 
     @Override
-    public PassportResponseDto refreshPassport(Integer id, PassportRequestDto passportRequestDto) {
+    public PassportResponseDto refreshPassport(String id, PassportRequestDto passportRequestDto) {
         log.info("*** method refreshPassport >>>  START ");
-        log.debug("*** method refreshPassport  >>>  START ");
         PassportResponseDto passportResponseDto = passportMapper
-                .toResponseDto(passportService.updateById(id,passportMapper.toPassport(passportRequestDto)));
+                .toResponseDto(passportService.updateById((id), passportMapper.toPassport(passportRequestDto)));
         log.info("*** method refreshPassport >>>  FINISH ");
-        log.debug("*** method refreshPassport >>>  FINISH ");
         return passportResponseDto;
     }
 }

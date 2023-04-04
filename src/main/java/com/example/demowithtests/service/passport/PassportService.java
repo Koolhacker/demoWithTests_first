@@ -11,5 +11,5 @@ public interface PassportService {
 
     Passport getById(String id);
 
-    Passport updateById(Integer id, Passport passport);
+    Passport updateById(String id, Passport passport);
 }
