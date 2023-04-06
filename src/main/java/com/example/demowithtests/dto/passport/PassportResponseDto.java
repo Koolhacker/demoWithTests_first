@@ -12,7 +12,7 @@ import java.util.UUID;
 public class PassportResponseDto {
 
     public Integer id;
-    public final UUID serialNumber = UUID.randomUUID();
+    public final UUID serialNumber;
     public String firstName;
     public String secondName;
     public LocalDate birthDate;

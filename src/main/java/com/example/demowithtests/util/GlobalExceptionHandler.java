@@ -30,6 +30,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("Id not found"), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(WrongDataException.class)
+    protected ResponseEntity<MyGlobalExceptionHandler> WrongDataException() {
+        return new ResponseEntity<>(new MyGlobalExceptionHandler("Something wrong - Check all data"), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(DataAbsentException.class)
     protected ResponseEntity<MyGlobalExceptionHandler> dataAbsentException() {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("Not enough data"), HttpStatus.BAD_REQUEST);

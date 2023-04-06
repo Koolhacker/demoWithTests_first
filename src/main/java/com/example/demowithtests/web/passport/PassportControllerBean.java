@@ -1,9 +1,11 @@
 package com.example.demowithtests.web.passport;
 
+import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Passport;
 import com.example.demowithtests.dto.passport.PassportRequestDto;
 import com.example.demowithtests.dto.passport.PassportResponseDto;
 import com.example.demowithtests.service.passport.PassportService;
+import com.example.demowithtests.util.config.mapstruct.EmployeeMapper;
 import com.example.demowithtests.util.config.mapstruct.PassportMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -48,7 +50,7 @@ public class PassportControllerBean implements PassportController {
     }
 
     @Override
-    public PassportResponseDto getPassportById(String id) {
+    public PassportResponseDto getPassportById(Integer id) {
         log.info("*** method getPassportById >>>  START ");
         Passport passport = passportService.getById(id);
         PassportResponseDto passportResponseDto = passportMapper.toResponseDto(passport);
@@ -57,10 +59,10 @@ public class PassportControllerBean implements PassportController {
     }
 
     @Override
-    public PassportResponseDto refreshPassport(String id, PassportRequestDto passportRequestDto) {
+    public PassportResponseDto refreshPassport(Integer id, PassportRequestDto passportRequestDto) {
         log.info("*** method refreshPassport >>>  START ");
         PassportResponseDto passportResponseDto = passportMapper
-                .toResponseDto(passportService.updateById((id), passportMapper.toPassport(passportRequestDto)));
+                .toResponseDto(passportService.updateById(id, passportMapper.toPassport(passportRequestDto)));
         log.info("*** method refreshPassport >>>  FINISH ");
         return passportResponseDto;
     }

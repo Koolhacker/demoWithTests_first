@@ -9,9 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
-//@NoArgsConstructor
 @Builder
-//@Data
 @Getter
 @Setter
 public class Employee {
@@ -89,6 +87,10 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "passport_id", referencedColumnName = "id")
     private Passport passport;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employe_id")
+    private  Set<Workplace> workplaces = new HashSet<>();
 
     public Employee(String name, String country, Boolean isDeleted) {
         this.name = name;

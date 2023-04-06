@@ -9,7 +9,11 @@ public interface PassportService {
 
     List<Passport> getAll();
 
-    Passport getById(String id);
+    Passport getById(Integer id);
 
-    Passport updateById(String id, Passport passport);
+    Passport updateById(Integer id, Passport passport);
+
+    void fillPassports();
+
+
 }

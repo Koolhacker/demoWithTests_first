@@ -4,10 +4,8 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Passport;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.repository.PassportRepository;
-import com.example.demowithtests.util.DataAbsentException;
-import com.example.demowithtests.util.ResourceNotFoundException;
-import com.example.demowithtests.util.ResourceWasDeletedException;
-import com.example.demowithtests.util.WrongTypeIdException;
+import com.example.demowithtests.service.passport.PassportService;
+import com.example.demowithtests.util.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +23,9 @@ public class EmployeeServiceBean implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final PassportRepository passportRepository;
+    private final PassportService passportService;
+
+
 //    private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
 
     @Override
@@ -179,12 +180,12 @@ public class EmployeeServiceBean implements EmployeeService {
     @Override
     public List<Employee> sendEmailByCountry(String country, String text) {
         List<Employee> employees = employeeRepository.findEmployeeByCountry(country);
-        log.info(employees.toString());
-        mailSender(extracted(employees), text);
+        log.info(" SERVICE " + employees.toString());
+        mailSender(checkIsFree(employees), text);
         return employees;
     }
 
-    private static List<String> extracted(List<Employee> employees) {
+    private static List<String> checkIsFree(List<Employee> employees) {
         List<String> emails = new ArrayList<>();
         for (Employee emp : employees) {
             emails.add(emp.getEmail());
@@ -200,15 +201,15 @@ public class EmployeeServiceBean implements EmployeeService {
     public List<Employee> sendEmailByCity(String city, String text) {
         List<Employee> employees = employeeRepository.findEmployeeByAddresses(city);
         log.info(employees.toString());
-        mailSender(extracted(employees), text);
+        mailSender(checkIsFree(employees), text);
         return employees;
     }
 
     @Override
     public List<Employee> sendEmailByCountryAndCity(String country, String city, String text) {
         List<Employee> employees = employeeRepository.findEmployeeByCountryAndCity(country, city);
-        log.info("---it`s work---" + employees);
-        mailSender(extracted(employees), text);
+        log.info("  SERVICE ---it`s work---" + employees);
+        mailSender(checkIsFree(employees), text);
         return employees;
     }
 
@@ -216,19 +217,47 @@ public class EmployeeServiceBean implements EmployeeService {
     @Override
     public List<Employee> findEmployeeWhoChangedCountry(String country, String text) {
         List<Employee> employeeList = employeeRepository.findEmployeeWhoChangedCountry(country);
-        mailSender(extracted(employeeList), text);
+        mailSender(checkIsFree(employeeList), text);
         return employeeList;
     }
 
     @Override
     public Employee addPassport(Integer employeeId, Integer passportId) {
-        log.debug("*** method addPassport >>>  START ");
+        log.debug("*** SERVICE method addPassport >>>  START ");
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(WrongTypeIdException::new);
         Passport passport = passportRepository.findById(passportId).orElseThrow(WrongTypeIdException::new);
         employee.setPassport(passport);
-        log.debug("*** method addPassport BEFORE SAVING >>>  FINISH ");
+        if (passport.getIsFree() == Boolean.FALSE){
+            log.debug("*** SERVICE method addPassport  >>> EXCEPTION ");
+            throw new WrongDataException();}
+        log.debug("*** SERVICE method addPassport BEFORE SAVING >>>  FINISH ");
         employeeRepository.save(employee);
-        log.debug("*** method addPassport AFTER SAVING >>>  FINISH ");
+        log.debug("*** SERVICE method addPassport AFTER SAVING >>>  FINISH ");
         return employee;
     }
+
+    @Override
+    public Employee addPassport(Integer employeeId) {
+        log.debug("*** SERVICE method addPassport >>>  START ");
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(WrongTypeIdException::new);
+        checkIsFree();
+        employee.setPassport(passportRepository
+                .findAll().stream()
+                .filter(f -> (f.getIsFree()))
+                .findFirst().orElseThrow(IdNotFoundException::new));
+        employee.getPassport().setIsFree(Boolean.FALSE);
+        employeeRepository.save(employee);
+        log.debug("*** SERVICE method addPassport >>>  FINISH ");
+        return employee;
+    }
+
+    private void checkIsFree() {
+        log.debug("*** SERVICE method checkIsFree >>>  START ");
+        if (passportRepository.getQuantityFreePassports() <= 5) {
+            passportService.fillPassports();
+        }
+        log.debug("*** SERVICE method checkIsFree >>>  FINISH ");
+    }
 }
+

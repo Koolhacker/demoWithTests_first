@@ -3,16 +3,15 @@ package com.example.demowithtests.util.config.mapstruct;
 import com.example.demowithtests.domain.*;
 import com.example.demowithtests.dto.employee.*;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 
-    Employee employeeDtoToEmployee(EmployeeDto employeeDto);
-    EmployeeDto employeeToEmployeeDto(Employee employee);
+    Employee employeeDtoToEmployee(EmployeeRequestDto employeeRequestDto);
+    EmployeeRequestDto employeeToEmployeeDto(Employee employee);
 //    @Mapping(target = "passport", source = "employee.passport")
-    EmployeeReadDto employeeToEmployeeReadDto(Employee employee);
-    Employee employeeReadDtoToEmployee(EmployeeReadDto employeeReadDto);
+    EmployeeResponseDto employeeToEmployeeReadDto(Employee employee);
+    Employee employeeReadDtoToEmployee(EmployeeResponseDto employeeResponseDto);
     Address addressDtoToAddress (AddressDto addressDto);
     AddressDto addressToAddressDto (Address address);
     Photo photoDtoToPhoto (PhotoDto value);

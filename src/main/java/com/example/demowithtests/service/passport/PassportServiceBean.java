@@ -23,21 +23,26 @@ public class PassportServiceBean implements PassportService {
     @Override
     public Passport create(Passport passport) {
         log.debug("*** method create >>>  START ");
-        return passportRepository.save(passport);
+        passport.setIsFree(Boolean.TRUE);
+        Passport createPassport = passportRepository.save(passport);
+        log.debug("*** method create >>>  FINISH ");
+        return createPassport;
     }
 
     @Override
     public List<Passport> getAll() {
         log.debug("*** method getAll >>>  START ");
-        return passportRepository.findAll();
+        List<Passport> getAllPassport = passportRepository.findAll();
+        log.debug("*** method getAll >>>  FINISH ");
+        return getAllPassport;
     }
 
     @Override
-    public Passport getById(String id) {
+    public Passport getById(Integer id) {
         Passport passport;
         log.debug("*** method getById >>>  START ");
         try {
-            passport = passportRepository.findById(Integer.valueOf(id))
+            passport = passportRepository.findById(id)
                     .orElseThrow(ResourceNotFoundException::new);
         } catch (IllegalArgumentException ex) {
             throw new WrongTypeIdException();
@@ -47,10 +52,10 @@ public class PassportServiceBean implements PassportService {
     }
 
     @Override
-    public Passport updateById(String id, Passport passport) {
+    public Passport updateById(Integer id, Passport passport) {
         log.debug("*** method updateById >>>  START ");
         try {
-            return passportRepository.findById(Integer.valueOf(id)).map(entity -> {
+            return passportRepository.findById(id).map(entity -> {
                 entity.setFirstName(passport.getFirstName());
                 entity.setSecondName(passport.getSecondName());
                 return passportRepository.save(entity);
@@ -59,5 +64,15 @@ public class PassportServiceBean implements PassportService {
             log.debug("*** method updateById  >>>  CATCH WRONG TYPE ID EXCEPTION ");
             throw new WrongTypeIdException();
         }
+    }
+
+    @Override
+
+    public void fillPassports() {
+        log.debug("*** SERVICE method fillPassports >>>  START ");
+        for(int i=0; i<=4; i++){
+            create(new Passport());
+        }
+        log.debug("*** SERVICE method fillPassports >>>  FINISH ");
     }
 }

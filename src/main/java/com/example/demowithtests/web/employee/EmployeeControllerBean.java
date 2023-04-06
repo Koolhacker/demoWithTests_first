@@ -1,18 +1,15 @@
 package com.example.demowithtests.web.employee;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.employee.EmployeeDto;
-import com.example.demowithtests.dto.employee.EmployeeReadDto;
+import com.example.demowithtests.dto.employee.EmployeeRequestDto;
+import com.example.demowithtests.dto.employee.EmployeeResponseDto;
 import com.example.demowithtests.service.employee.EmployeeService;
 import com.example.demowithtests.util.config.mapstruct.EmployeeMapper;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-//import lombok.var;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -34,10 +31,10 @@ public class EmployeeControllerBean implements EmployeeController {
     @Override
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeDto saveEmployee(@RequestBody EmployeeDto employeeDto) {
+    public EmployeeRequestDto saveEmployee(@RequestBody EmployeeRequestDto employeeRequestDto) {
         log.info(" *** method saveEmployee >>>  START");
-        Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
-        EmployeeDto dto = employeeMapper.employeeToEmployeeDto(employeeService.create(employee));
+        Employee employee = employeeMapper.employeeDtoToEmployee(employeeRequestDto);
+        EmployeeRequestDto dto = employeeMapper.employeeToEmployeeDto(employeeService.create(employee));
         log.info(" *** method saveEmployee >>>  FINISH ");
         return dto;
     }
@@ -53,10 +50,10 @@ public class EmployeeControllerBean implements EmployeeController {
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Override
-    public EmployeeReadDto getEmployeeById(@PathVariable String id) {
+    public EmployeeResponseDto getEmployeeById(@PathVariable String id) {
         log.info("*** method getEmployeeById >>>  START , id = {}", id);
         Employee employee = employeeService.getById(id);
-        EmployeeReadDto dto = employeeMapper.employeeToEmployeeReadDto(employee);
+        EmployeeResponseDto dto = employeeMapper.employeeToEmployeeReadDto(employee);
         log.info(" *** method getEmployeeById >>>  FINISH info {} ", employee);
         return dto;
     }
@@ -157,7 +154,7 @@ public class EmployeeControllerBean implements EmployeeController {
     }
 
     @Override
-    public EmployeeReadDto addPassport(Integer employeeId, Integer passportId) {
+    public EmployeeResponseDto addPassport(Integer employeeId, Integer passportId) {
         log.info("*** method addPassport >>>  START ");
         Employee employee = employeeService.addPassport(employeeId, passportId);
         log.info("*** method addPassport >>>  FINISH ");
@@ -165,11 +162,19 @@ public class EmployeeControllerBean implements EmployeeController {
     }
 
     @Override
-    public EmployeeReadDto addPassportSafely(Integer employeeId, Integer passportId) {
+    public EmployeeResponseDto addPassportSafely(Integer employeeId, Integer passportId) {
         log.info("*** method addPassportSafely >>>  START ");
         Employee employee = employeeService.addPassport(employeeId, passportId);
         log.info("*** method addPassportSafely >>>  FINISH ");
         return employeeMapper.employeeToEmployeeReadDto(employee);
     }
 
+    @Override
+    public EmployeeResponseDto addPassport(Integer employeeId) {
+        log.info("*** method addPassport >>>  START ");
+        Employee employee = employeeService.addPassport(employeeId);
+        EmployeeResponseDto employeeResponseDto = employeeMapper.employeeToEmployeeReadDto(employee);
+        log.info("*** method addPassport >>>  FINISH ");
+        return employeeResponseDto;
+    }
 }

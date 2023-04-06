@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class EmployeeReadDto { // !!!!!!!!!! This will see user  !!!!!!!!!!!
+public class EmployeeResponseDto { // !!!!!!!!!! This will see user  !!!!!!!!!!!
 
 
     public String name;
