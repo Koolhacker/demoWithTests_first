@@ -22,7 +22,7 @@ public class EmployeeRequestDto {
     @Schema(description = "Email of an employee.", example = "123@gmail.com", required = true)
     public String email;
 
-    @NotNull
+//    @NotNull
     @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
     @Schema(description = "Country of an employee.", example = "Ukraine", required = true)
     public String country;

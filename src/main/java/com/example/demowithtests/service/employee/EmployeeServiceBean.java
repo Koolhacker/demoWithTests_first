@@ -30,12 +30,12 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public Employee create(Employee employee) {
-        if (employee.getName() == null || employee.getEmail() == null || employee.getCountry() == null) {
-            log.info("Not enough data. HttpStatus - " + HttpStatus.BAD_REQUEST);
-
-//            log.info("getAllEmployeeCountry() - end: countries = {}", countries);
-            throw new DataAbsentException();
-        }
+//        if (employee.getName() == null || employee.getEmail() == null || employee.getCountry() == null) {
+//            log.info("Not enough data. HttpStatus - " + HttpStatus.BAD_REQUEST);
+//
+////            log.info("getAllEmployeeCountry() - end: countries = {}", countries);
+//            throw new DataAbsentException();
+//        }
         return employeeRepository.save(employee);
     }
 
