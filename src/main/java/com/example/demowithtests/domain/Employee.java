@@ -12,6 +12,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
+@ToString
 public class Employee {
 
     @Id
@@ -88,9 +89,10 @@ public class Employee {
     @JoinColumn(name = "passport_id", referencedColumnName = "id")
     private Passport passport;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "employe_id")
     private  Set<Workplace> workplaces = new HashSet<>();
+
 
     public Employee(String name, String country, Boolean isDeleted) {
         this.name = name;

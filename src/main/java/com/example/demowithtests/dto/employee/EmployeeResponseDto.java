@@ -1,6 +1,8 @@
 package com.example.demowithtests.dto.employee;
 
+import com.example.demowithtests.domain.Workplace;
 import com.example.demowithtests.dto.passport.PassportResponseDto;
+import com.example.demowithtests.dto.workplace.WorkplaceResponseDto;
 import lombok.Data;
 
 import java.time.Instant;
@@ -27,4 +29,5 @@ public class EmployeeResponseDto { // !!!!!!!!!! This will see user  !!!!!!!!!!!
     public Set<PhotoDto> photos = new HashSet<>();
 
     public PassportResponseDto passport;
+    public Set<WorkplaceResponseDto> workplaces;
 }

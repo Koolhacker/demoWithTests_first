@@ -35,6 +35,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("Something wrong - Check all data"), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(WorkplaceFullException.class)
+    protected ResponseEntity<MyGlobalExceptionHandler> WorkplaceFullException() {
+        return new ResponseEntity<>(new MyGlobalExceptionHandler("Workplace full - Send employee to another workplace"), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(DataAbsentException.class)
     protected ResponseEntity<MyGlobalExceptionHandler> dataAbsentException() {
         return new ResponseEntity<>(new MyGlobalExceptionHandler("Not enough data"), HttpStatus.BAD_REQUEST);

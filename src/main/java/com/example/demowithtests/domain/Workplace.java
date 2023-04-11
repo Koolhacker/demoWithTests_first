@@ -15,6 +15,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
+//@ToString
 
 public class Workplace {
     @Id
@@ -24,9 +25,12 @@ public class Workplace {
     private String address;
     private Boolean isActive = Boolean.TRUE;
 
+    private Integer capacity;
+
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "workplaces")
     @JsonIgnore
     private Set<Employee> users = new HashSet<>();
+
 
 
 }

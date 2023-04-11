@@ -1,6 +1,7 @@
 package com.example.demowithtests.service.employee;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.domain.Workplace;
 
 import java.util.List;
 
@@ -44,6 +45,8 @@ public interface EmployeeService {
     Employee addPassport(Integer employeeId, Integer passportId);
 
     Employee addPassport(Integer employeeId);
+
+    Employee addWorkplace(Integer employeeId, Integer workplaceId);
 
 
 }

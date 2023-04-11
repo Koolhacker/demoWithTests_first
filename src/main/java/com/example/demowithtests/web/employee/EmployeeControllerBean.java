@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -175,6 +176,15 @@ public class EmployeeControllerBean implements EmployeeController {
         Employee employee = employeeService.addPassport(employeeId);
         EmployeeResponseDto employeeResponseDto = employeeMapper.employeeToEmployeeReadDto(employee);
         log.info("*** method addPassport >>>  FINISH ");
+        return employeeResponseDto;
+    }
+
+    @Override
+    public EmployeeResponseDto addWorkplace(Integer employeeId, Integer workplaceId) {
+        log.info("*** method addWorkplace >>>  START ");
+        Employee employee = employeeService.addWorkplace(employeeId,workplaceId);
+        EmployeeResponseDto employeeResponseDto = employeeMapper.employeeToEmployeeReadDto(employee);
+        log.info("*** method addWorkplace >>>  FINISH ");
         return employeeResponseDto;
     }
 }

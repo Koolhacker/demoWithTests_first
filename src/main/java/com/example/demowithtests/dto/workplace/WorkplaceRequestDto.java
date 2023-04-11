@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WorkplaceRequestDto {
-    @NotNull(message = "Id may not be null")
-    @Schema(description = "Id of workplace.", example = "1", required = true)
-    private Integer id;
+//    @NotNull(message = "Id may not be null")
+//    @Schema(description = "Id of workplace.", example = "1", required = true)
+//    public Integer id;
 
     @NotNull(message = "Name may not be null")
     @Size(min = 1, max = 42, message = "Name must be between 1 and 42 characters long")
@@ -26,6 +26,11 @@ public class WorkplaceRequestDto {
     @Schema(description = "isActive of workplace.", example = "true / false. ", required = true)
     public Boolean isActive = Boolean.TRUE;
 
-    @Schema(description = " Set<Employee> ", example = " ... ", required = true)
-    private Set<Employee> users = new HashSet<>();
+    @NotNull(message = "Address may not be null")
+    @Size(min = 1, max = 10, message = "Address must be between 1 and 102 characters long")
+    @Schema(description = "Capacity of workplace.", example = " 5 ", required = true)
+    public Integer capacity;
+
+//    @Schema(description = " Set<Employee> ", example = " ... ", required = true)
+//    public Set<Employee> users = new HashSet<>();
 }

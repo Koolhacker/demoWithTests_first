@@ -53,4 +53,13 @@ public interface EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     EmployeeResponseDto addPassport(@PathVariable ("id") Integer employeeId);
 
+    @Operation(summary = "This is endpoint to add workplace for an employee.", description = "Create request to add workplace for an employee.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The workplace for an employee and added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee or workplace request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee or workplace already exists")})
+    @PatchMapping("/users/employee/{eid}/workplaces/{wid}")
+    @ResponseStatus(HttpStatus.OK)
+    EmployeeResponseDto addWorkplace(@PathVariable ("eid") Integer employeeId, @PathVariable("wid") Integer workplaceId);
 }

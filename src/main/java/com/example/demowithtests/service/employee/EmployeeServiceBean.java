@@ -2,14 +2,16 @@ package com.example.demowithtests.service.employee;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Passport;
+import com.example.demowithtests.domain.Workplace;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.repository.PassportRepository;
+import com.example.demowithtests.repository.WorkplaceRepository;
 import com.example.demowithtests.service.passport.PassportService;
+import com.example.demowithtests.service.workplace.WorkplaceService;
 import com.example.demowithtests.util.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,9 +22,13 @@ import java.util.*;
 @Service
 
 public class EmployeeServiceBean implements EmployeeService {
+    private final WorkplaceRepository workplaceRepository;
 
     private final EmployeeRepository employeeRepository;
     private final PassportRepository passportRepository;
+
+    private final WorkplaceService workplaceService;
+
     private final PassportService passportService;
 
 
@@ -227,9 +233,10 @@ public class EmployeeServiceBean implements EmployeeService {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(WrongTypeIdException::new);
         Passport passport = passportRepository.findById(passportId).orElseThrow(WrongTypeIdException::new);
         employee.setPassport(passport);
-        if (passport.getIsFree() == Boolean.FALSE){
+        if (passport.getIsFree() == Boolean.FALSE) {
             log.debug("*** SERVICE method addPassport  >>> EXCEPTION ");
-            throw new WrongDataException();}
+            throw new WrongDataException();
+        }
         log.debug("*** SERVICE method addPassport BEFORE SAVING >>>  FINISH ");
         employeeRepository.save(employee);
         log.debug("*** SERVICE method addPassport AFTER SAVING >>>  FINISH ");
@@ -258,6 +265,32 @@ public class EmployeeServiceBean implements EmployeeService {
             passportService.fillPassports();
         }
         log.debug("*** SERVICE method checkIsFree >>>  FINISH ");
+    }
+
+    @Override
+    public Employee addWorkplace(Integer employeeId, Integer workplaceId) {
+        log.debug("*** SERVICE method addWorkplace >>>  START ");
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(IdNotFoundException::new);
+        Workplace workplace = workplaceService.getById(workplaceId);
+        checkIsfull(workplaceId);
+        employee.getWorkplaces().add(workplace);
+        catchingException(employee);
+        log.debug("*** SERVICE method addWorkplace >>>  FINISH ");
+        return employee;
+    }
+
+    private void catchingException(Employee employee) {
+        try {
+            employeeRepository.save(employee);
+        } catch (RuntimeException e) {
+            log.debug("*** SERVICE method addWorkplace >>>  CATCH EXCEPTION ");
+            throw new WrongDataException();
+        }
+    }
+
+    private void checkIsfull(Integer workplaceId) {
+        if ((workplaceRepository.getUsersAtWorkplace(workplaceId)) >= (workplaceService.getById(workplaceId).getCapacity()))
+            throw new WorkplaceFullException();
     }
 }
 

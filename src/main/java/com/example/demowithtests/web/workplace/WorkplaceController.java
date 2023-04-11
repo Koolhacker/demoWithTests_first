@@ -20,7 +20,7 @@ public interface WorkplaceController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified workplace request not found."),
             @ApiResponse(responseCode = "409", description = "Workplace already exists")})
-    @PostMapping("/workplaces")
+    @PostMapping("/workplace")
     @ResponseStatus(HttpStatus.CREATED)
     WorkplaceResponseDto saveWorkplace(@RequestBody WorkplaceRequestDto workplaceRequestDto);
 
@@ -30,7 +30,7 @@ public interface WorkplaceController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified list of workplaces request not found."),
             @ApiResponse(responseCode = "409", description = "List of workplaces already exists")})
-    @GetMapping("/workplaces")
+    @GetMapping("/workplace")
     @ResponseStatus(HttpStatus.OK)
     List<WorkplaceResponseDto> getAllWorkplaces();
 
@@ -40,7 +40,7 @@ public interface WorkplaceController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified workplace request not found."),
             @ApiResponse(responseCode = "409", description = "Workplace already exists")})
-    @GetMapping("/workplaces/{id}")
+    @GetMapping("/workplace/{id}")
     @ResponseStatus(HttpStatus.OK)
     WorkplaceResponseDto getWorkplaceById(@PathVariable Integer id);
 }

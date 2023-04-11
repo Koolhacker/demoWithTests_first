@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,11 +34,18 @@ public class WorkplaceControllerBean implements WorkplaceController {
 
     @Override
     public List<WorkplaceResponseDto> getAllWorkplaces() {
-        return null;
+        List <Workplace> workplaceList = workplaceService.getAll();
+        List <WorkplaceResponseDto> workplaceResponseDtoList = new ArrayList<>();
+        for(Workplace workplace : workplaceList){
+            workplaceResponseDtoList.add(workplaceMapper.workplaceToWorkplaceResponseDto(workplace));
+        }
+        return workplaceResponseDtoList;
     }
 
     @Override
     public WorkplaceResponseDto getWorkplaceById(Integer id) {
-        return null;
+        Workplace workplace = workplaceService.getById(id);
+        WorkplaceResponseDto workplaceResponseDto = workplaceMapper.workplaceToWorkplaceResponseDto(workplace);
+        return workplaceResponseDto;
     }
 }
