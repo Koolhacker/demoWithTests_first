@@ -1,0 +1,1 @@
+update users set age = 55 where age is null;

@@ -1,4 +1,4 @@
-create table public.new_table
+create table if not exists public.new_table
 (
     id serial
         primary key
