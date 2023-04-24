@@ -3,12 +3,16 @@ package com.example.demowithtests;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.employee.EmployeeServiceBean;
+import com.example.demowithtests.util.ResourceNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -20,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DataJpaTest
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeServiceTests {
 
@@ -28,6 +33,9 @@ public class EmployeeServiceTests {
 
     @InjectMocks
     private EmployeeServiceBean service;
+
+    @Autowired
+    private TestEntityManager tem;
 
     @Test
     public void whenSaveEmployee_shouldReturnEmployee() throws IOException {
@@ -55,7 +63,7 @@ public class EmployeeServiceTests {
         verify(employeeRepository).findById(Integer.valueOf(employee.getId()));
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test(expected = ResourceNotFoundException.class)
     public void should_throw_exception_when_employee_doesnt_exist() {
         Employee employee = new Employee();
         employee.setId(89);
@@ -63,5 +71,21 @@ public class EmployeeServiceTests {
 
         given(employeeRepository.findById(anyInt())).willReturn(Optional.empty());
         service.getById(String.valueOf(employee.getId()));
+    }
+
+    @Test
+    public void testSaveEntityManager(){
+
+//        Employee employeeTest = this.testE.persist(Employee.builder().name("Test")).build();
+
+        Employee employee = new Employee();
+        employee.setName("Mark");
+
+        when(tem.persist(ArgumentMatchers.any(Employee.class))).thenReturn(employee);
+
+        Employee created = service.saveThroughEntityManager(employee);
+
+        assertThat(created).isSameAs(employee.getName());
+        verify(tem).persist(employee);
     }
 }

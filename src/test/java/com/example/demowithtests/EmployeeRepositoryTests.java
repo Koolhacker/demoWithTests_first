@@ -31,6 +31,8 @@ public class EmployeeRepositoryTests {
         employeeRepository.save(employee);
 
         Assertions.assertThat(employee.getId()).isGreaterThan(Integer.parseInt(String.valueOf(0)));
+        Assertions.assertThat(employee.getName().equals("Mark"));
+        Assertions.assertThat(employee.getId()).isNotNull();
     }
 
     @Test

@@ -37,7 +37,7 @@ logging:
     #    com.example.demowithtests.web: debug
 #    com.example.demowithtests: debug
 #    org.springframework: warn
-#    org.hibernate: trace
+#        org.hibernate: debug
 #    org.apache.catalina.core: warn
 
 springdoc:

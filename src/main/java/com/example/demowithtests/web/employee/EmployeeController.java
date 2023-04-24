@@ -62,4 +62,32 @@ public interface EmployeeController {
     @PatchMapping("/users/employee/{eid}/workplaces/{wid}")
     @ResponseStatus(HttpStatus.OK)
     EmployeeResponseDto addWorkplace(@PathVariable ("eid") Integer employeeId, @PathVariable("wid") Integer workplaceId);
+
+    @Operation(summary = "This is endpoint to create an employee by method save_Through_Entity_Manager.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The employee added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+    @PostMapping("/saveThroughEntityManager")
+    @ResponseStatus(HttpStatus.CREATED)
+    void saveThroughEntityManager(@RequestBody Employee employee);
+
+    @Operation(summary = "This is endpoint to detach an employee.",  tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The employee detached in database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee not found.")})
+    @GetMapping("/detachThroughEntityManager/{eid}")
+    @ResponseStatus(HttpStatus.OK)
+    void detachThroughEntityManager(@PathVariable ("eid") Integer id);
+
+    @Operation(summary = "This is endpoint to remove an employee.",  tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The employee added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee not found.")})
+    @GetMapping("/removeThroughEntityManager/{eid}")
+    @ResponseStatus(HttpStatus.OK)
+    void removeThroughEntityManager(@PathVariable ("eid") Integer id);
 }

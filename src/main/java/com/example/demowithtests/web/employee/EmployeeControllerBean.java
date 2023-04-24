@@ -187,4 +187,19 @@ public class EmployeeControllerBean implements EmployeeController {
         log.info("*** method addWorkplace >>>  FINISH ");
         return employeeResponseDto;
     }
+
+    @Override
+    public void saveThroughEntityManager(Employee employee) {
+        employeeService.saveThroughEntityManager(employee);
+    }
+
+    @Override
+    public void detachThroughEntityManager(Integer id) {
+        employeeService.detachThroughEntityManager(id);
+    }
+
+    @Override
+    public void removeThroughEntityManager(Integer id) {
+        employeeService.removeThroughEntityManager(id);
+    }
 }

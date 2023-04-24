@@ -1,0 +1,11 @@
+alter table  users add name_and_country12 text;
+
+alter table public.users drop name_and_country12;
+
+update users set name_and_country = concat(name, ' = ', country);
+
+select age from public.users where age is null;
+
+update users set age = 65 where age = 25;
+
+

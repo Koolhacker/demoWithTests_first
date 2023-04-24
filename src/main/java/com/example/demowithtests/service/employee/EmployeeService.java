@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EmployeeService {
 
+
     Employee create(Employee employee) ;
 
     List<Employee> getAll();
@@ -48,5 +49,10 @@ public interface EmployeeService {
 
     Employee addWorkplace(Integer employeeId, Integer workplaceId);
 
+    Employee saveThroughEntityManager(Employee employee);
+
+    public void detachThroughEntityManager(Integer id);
+
+    public void removeThroughEntityManager(Integer id);
 
 }

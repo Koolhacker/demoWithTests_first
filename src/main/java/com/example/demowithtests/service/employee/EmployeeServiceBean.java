@@ -13,8 +13,12 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import java.util.*;
 
 @AllArgsConstructor
@@ -23,14 +27,36 @@ import java.util.*;
 
 public class EmployeeServiceBean implements EmployeeService {
     private final WorkplaceRepository workplaceRepository;
-
     private final EmployeeRepository employeeRepository;
     private final PassportRepository passportRepository;
-
     private final WorkplaceService workplaceService;
-
     private final PassportService passportService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+//    @javax.transaction.Transactional
+    public Employee saveThroughEntityManager(Employee employee) {
+        return entityManager.merge(employee);
+//        entityManager.persist(employee);
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    public void detachThroughEntityManager(Integer id) {
+        log.debug("before detach");
+        entityManager.detach(entityManager.find(Employee.class, id));
+        log.debug("after detach");
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    public void removeThroughEntityManager(Integer id) {
+        log.debug("before removeThroughEntityManager");
+        entityManager.detach(entityManager.find(Employee.class, id));
+        log.debug("Inside removeThroughEntityManager");
+        entityManager.remove(entityManager.find(Employee.class, id));
+        log.debug("after removeThroughEntityManager");
+    }
 
 //    private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
 
