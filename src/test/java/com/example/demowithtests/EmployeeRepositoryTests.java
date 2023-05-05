@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,16 +23,22 @@ public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    private FlywayMigrationInitializer flywayMigrationInitializer;
+
     @Test
     @Order(1)
     @Rollback(value = false)
     public void saveEmployeeTest() {
 
-        Employee employee = Employee.builder().name("Mark").country("England").build();
+        Employee employee = Employee
+                .builder()
+                .name("Mark")
+                .country("England")
+                .build();
 
         employeeRepository.save(employee);
 
-        Assertions.assertThat(employee.getId()).isGreaterThan(Integer.parseInt(String.valueOf(0)));
+        Assertions.assertThat(employee.getId()).isGreaterThan(0); // isGreaterThan(Integer.parseInt(String.valueOf(0)));
         Assertions.assertThat(employee.getName().equals("Mark"));
         Assertions.assertThat(employee.getId()).isNotNull();
     }

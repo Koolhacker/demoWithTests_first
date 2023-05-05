@@ -36,10 +36,9 @@ public class EmployeeServiceBean implements EmployeeService {
     private EntityManager entityManager;
 
     @Transactional
-//    @javax.transaction.Transactional
     public Employee saveThroughEntityManager(Employee employee) {
-        return entityManager.merge(employee);
-//        entityManager.persist(employee);
+        entityManager.persist(employee);
+        return employee;
     }
 
     @Transactional(propagation = Propagation.NEVER)

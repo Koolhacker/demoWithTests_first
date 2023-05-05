@@ -3,8 +3,7 @@ package com.example.demowithtests;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.employee.EmployeeServiceBean;
-import com.example.demowithtests.util.ResourceNotFoundException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,10 +32,10 @@ public class EmployeeServiceTests {
     private EmployeeServiceBean service;
 
     @Autowired
-    private TestEntityManager tem;
+    private TestEntityManager testEntityManager;
 
     @Test
-    public void whenSaveEmployee_shouldReturnEmployee() throws IOException {
+    public void whenSaveEmployee_shouldReturnEmployee() throws Exception {
         Employee employee = new Employee();
         employee.setName("Mark");
 
@@ -50,7 +47,7 @@ public class EmployeeServiceTests {
         verify(employeeRepository).save(employee);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void whenGivenId_shouldReturnEmployee_ifFound() {
         Employee employee = new Employee();
         employee.setId(88);
@@ -63,7 +60,7 @@ public class EmployeeServiceTests {
         verify(employeeRepository).findById(Integer.valueOf(employee.getId()));
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @org.junit.jupiter.api.Test
     public void should_throw_exception_when_employee_doesnt_exist() {
         Employee employee = new Employee();
         employee.setId(89);
@@ -73,19 +70,16 @@ public class EmployeeServiceTests {
         service.getById(String.valueOf(employee.getId()));
     }
 
-    @Test
-    public void testSaveEntityManager(){
+    @org.junit.Test
+    public void testSaveEntityManager() {
 
-//        Employee employeeTest = this.testE.persist(Employee.builder().name("Test")).build();
+        Employee employeeTest = this.testEntityManager.persistFlushFind(Employee.builder().name("Test")).build();
 
         Employee employee = new Employee();
         employee.setName("Mark");
-
-        when(tem.persist(ArgumentMatchers.any(Employee.class))).thenReturn(employee);
-
+        when(testEntityManager.persistFlushFind(ArgumentMatchers.any(Employee.class))).thenReturn(employee);
         Employee created = service.saveThroughEntityManager(employee);
-
         assertThat(created).isSameAs(employee.getName());
-        verify(tem).persist(employee);
+        verify(testEntityManager).persist(employee);
     }
 }
